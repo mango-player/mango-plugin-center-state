@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>test</title>
+    <style>
+      #wrap{
+        width: 768px;
+        height: 390px;
+      }
+      container{
+        position: relative;
+      }
+      container, video{
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #000;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="wrap"></div>
+  </body>
+  <script src="../node_modules/mango/lib/index.js"></script>
+  <script src="../node_modules/mango-plugin-controlbar/lib/index.js"></script>
+  <script src="/assets/index.js"></script>
+  <script>
+    Mango.install(mangoPluginControlbar);
+    Mango.install(mangoPluginCenterState);
+    const player = new Mango({
+      wrapper: '#wrap',
+      src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
+      plugin: [
+        mangoPluginControlbar.name, 
+        {
+          name: mangoPluginCenterState.name,
+          errorTips: '错误提示'
+        }
+      ],
+      controls: true,
+      autoplay: false
+    });
+  </script>
+</html>
