@@ -1,5 +1,7 @@
-chimee-center-state{
+mango-center-state{
    position: absolute; 
+   width: 100%;
+   height: 100%;
 }
 
 /* 状态动画 */
@@ -23,26 +25,114 @@ chimee-center-state{
   }
 }
 
+/**** splasn 动画 *****/
+@keyframes fadein{
+  0%{
+    opacity:0
+  }
+  100%{
+    opacity:1
+  }
+}
+
 /* 全部初始皆为隐藏状态 */
-chimee-center-state-error,
-chimee-center-state-correct,
-chimee-center-state-loading,
-chimee-center-state-tip{
+mango-center-state-error,
+mango-center-state-correct,
+mango-center-state-loading,
+mango-center-state-tip,
+mango-center-state-ad-error,
+mango-center-state-blue,
+mango-center-state-payment,
+mango-center-state-finish{
   display: none;
 }
 
-chimee-center-state.error chimee-center-state-error,
-chimee-center-state.correct chimee-center-state-correct,
-chimee-center-state.loading chimee-center-state-loading,
-chimee-center-state.tip chimee-center-state-tip{
-  display: inline-block;
-}
-chimee-center-state-correct{
-  width: 104px;
-  height: 104px;
+/***  splash UI  ***/
+mango-center-state-splash {
+  width: 327px;
+  height: 110px;
+  top: 50%;
+  margin-top: -70px;
+  position: absolute;
+  left: 50%;
+  margin-left: -163.5px;
 }
 
-chimee-center-state-tip{
+mango-center-state-splash .splash-inner{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url(//img.mgtv.com/imgotv-miniv6/player/h5skin/mgtv.png) center center no-repeat;
+}
+
+mango-center-state-splash .loading-ico{
+  display: block;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  bottom: -12px;
+  left: 133px;
+  border-radius: 100%;
+  overflow: hidden;
+  z-index: 1;
+  background: url(//img.mgtv.com/imgotv-miniv6/player/h5skin/loading.png) no-repeat;
+  animation: loading .8s infinite linear;
+}
+
+/** loading UI **/
+mango-center-state-loading{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.6);
+}
+mango-center-state-loading .loading-inner{
+    width: 30px;
+    height: 30px;
+    top: 50%;
+    margin-top: -15px;
+    position: absolute;
+    left: 50%;
+    margin-left: -15px;
+}
+
+mango-center-state-loading .loading-icon{
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    overflow: hidden;
+    z-index: 1;
+    top: 50%;
+    margin-top: -20px;
+    position: absolute;
+    left: 50%;
+    margin-left: -20px;
+    background: url(//img.mgtv.com/imgotv-miniv6/player/h5skin/loading.png) no-repeat;
+    animation: loading .8s infinite linear;
+}
+
+
+mango-center-state.error mango-center-state-error,
+mango-center-state.correct mango-center-state-status,
+mango-center-state.loading mango-center-state-loading,
+mango-center-state.tip mango-center-state-tip{
+  display: inline-block;
+}
+mango-center-state-status{
+  width: 104px;
+  height: 104px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -52px;
+  margin-left: -52px;
+}
+
+mango-center-state-tip{
   position: absolute;
   left: 26px;
   bottom: 26px;
@@ -53,26 +143,26 @@ chimee-center-state-tip{
   animation: animate .5s linear 1 normal forwards;
 }
 
-chimee-center-state.play span{
+mango-center-state.play span{
   background-image: url('./image/play.svg');
 }
-chimee-center-state.pause span{
+mango-center-state.pause span{
   background-image: url('./image/pause.svg');
 }
-chimee-center-state.back span{
+mango-center-state.back span{
   background-image: url('./image/back.svg');
 }
-chimee-center-state.forward span{
+mango-center-state.forward span{
   background-image: url('./image/forward.svg');
 }
-chimee-center-state.volume-high span{
+mango-center-state.volume-high span{
   background-image: url('./image/volume-high.svg');
 }
-chimee-center-state.volume-low span{
+mango-center-state.volume-low span{
   background-image: url('./image/volume-low.svg');
 }
 
-chimee-center-state-tip span{
+mango-center-state-tip span{
   display: inline-block;
   width: 24px;
   height: 24px;
@@ -84,23 +174,11 @@ chimee-center-state-tip span{
   box-sizing: initial;
 }
 
-chimee-center-state.play span{
+mango-center-state.play span{
   background-position: 110% 50%;
 }
 
-chimee-center-state-loading{
-  width: 52px;
-  height: 52px;
-  padding: 26px;
-  background-image: url('./image/loading.svg');
-  background-origin: content-box;
-  background-size: auto 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  animation: loading 1.2s linear infinite;
-}
-
-chimee-center-state-error{
+mango-center-state-error{
   display: none;
   position: absolute;
   left: 50%;
