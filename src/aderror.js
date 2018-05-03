@@ -1,5 +1,9 @@
 import { deepAssign, isObject, addClassName, removeClassName, $ } from 'mango-helper';
-import Base from './base.js';
+import { params, getUnionId, cookieGet } from './utils';
+import Base from './base';
+
+const unid = getUnionId();
+const openVipUrl = `https://order.mgtv.com/pay/pc/index.html?unid=${unid}&clocation=60201&ftype=2`
 
 /**
  * play 配置
@@ -22,7 +26,7 @@ const defaultOption = {
     </span>
     <span class="help-t2">观看广告，让小芒果能更好的为您服务</span>
     </p>
-    <p class="aderror-p aderror-button"><a href="" target="_blank">开通会员</a></p>
+    <p class="aderror-p aderror-button"><a href="${openVipUrl}" target="_blank">开通会员</a></p>
     <p class="aderror-p aderror-txt">开通会员不仅可以免广告，更有蓝光大片任您看。</p>
     `,
     defaultEvent: {
