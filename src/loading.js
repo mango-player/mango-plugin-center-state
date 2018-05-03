@@ -30,6 +30,14 @@ export default class Loading extends Base {
         this.$dom = $(this.$dom);
     }
 
+    show(status) {
+        if (status === false) {
+          this.parent.$domWrap.removeClass('loading');
+        } else {
+          this.parent.$domWrap.addClass('correct loading');
+        }
+    }
+
     click(e) {
 
     }

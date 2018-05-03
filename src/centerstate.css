@@ -5,12 +5,14 @@ mango-center-state{
 }
 
 /* 状态动画 */
-@keyframes animate {
-  from{
+@keyframes fadeInOut {
+  0%{
+    opacity: 0;
+  }
+  50%{
     opacity: 1;
   }
-  to{
-    transform: scale(2);
+  100%{
     opacity: 0;
   }
 }
@@ -119,7 +121,8 @@ mango-center-state-loading .loading-icon{
 mango-center-state.error mango-center-state-error,
 mango-center-state.correct mango-center-state-status,
 mango-center-state.loading mango-center-state-loading,
-mango-center-state.tip mango-center-state-tip{
+mango-center-state.tip mango-center-state-tip,
+mango-center-state.tip mango-center-state-tip-text{
   display: inline-block;
 }
 mango-center-state-status{
@@ -136,19 +139,26 @@ mango-center-state-tip{
   position: absolute;
   left: 26px;
   bottom: 26px;
-  width: 52px;
-  height: 52px;
-  border-radius: 26px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
   background: rgba(0, 0, 0, .5);
-  animation: animate .5s linear 1 normal forwards;
+  animation: fadeInOut .5s linear 1 normal forwards;
 }
 
 mango-center-state.play span{
-  background-image: url('./image/play.svg');
+  background: url(//img.mgtv.com/imgotv-miniv6/player/h5skin/icon-h5.png) no-repeat;
+  background-position: -442px 0;
 }
 mango-center-state.pause span{
-  background-image: url('./image/pause.svg');
+  background: url(//img.mgtv.com/imgotv-miniv6/player/h5skin/icon-h5.png) no-repeat;
+  background-position: -442px -100px;
 }
+mango-center-state.replay span{
+  background: url(//img.mgtv.com/imgotv-miniv6/player/h5skin/icon-h5.png) no-repeat;
+  background-position: -442px -200px;
+}
+/*
 mango-center-state.back span{
   background-image: url('./image/back.svg');
 }
@@ -160,13 +170,12 @@ mango-center-state.volume-high span{
 }
 mango-center-state.volume-low span{
   background-image: url('./image/volume-low.svg');
-}
+}*/
 
 mango-center-state-tip span{
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin: 14px;
+  width: 100px;
+  height: 100px;
   background-origin: content-box;
   background-size: auto 100%;
   background-repeat: no-repeat;
@@ -174,8 +183,16 @@ mango-center-state-tip span{
   box-sizing: initial;
 }
 
-mango-center-state.play span{
-  background-position: 110% 50%;
+mango-center-state-tip-text{
+  font-style: normal;
+  height: 30px;
+  margin-top: 10px;
+  line-height: 30px;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  text-shadow: 1px 1px 3px #000;
+  animation: fadeInOut .5s linear 1 normal forwards;
 }
 
 mango-center-state-error{

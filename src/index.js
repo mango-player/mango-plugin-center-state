@@ -4,8 +4,6 @@ import './centerstate.css';
 import popupFactory from 'mango-plugin-popup';
 import {createChild} from './createchild.js';
 
-const clss = 'correct tip play pause back forward volume-high volume-low';
-
 const defaultConfig = {
   errorTips: '加载失败，请刷新重试'
 };
@@ -22,7 +20,7 @@ const mangoCenterState = popupFactory({
     this.children = createChild(this);
   },
   inited() {
-    this.src && this.showLoading(true);
+    this.src && this.children.loading.show(true);
     // 调用子组件的初始化方法
     for(const i in this.children) {
       this.children[i].inited && this.children[i].inited();
@@ -34,12 +32,12 @@ const mangoCenterState = popupFactory({
     this.clearTimeout();
   },
   events: {
-    pause() {
-      this.showTip('pause');
-      this.showLoading(false);
+    videoPause() {
+      this.children.status.showTip('pause');
+      this.children.loading.show(false);
     },
-    play() {
-      this.showTip('play');
+    videoResume() {
+      this.children.status.showTip('play');
     },
     canplay() {
       this.playing();
@@ -55,55 +53,26 @@ const mangoCenterState = popupFactory({
       this.waiting();
     },
     timeupdate() {
-      this.showLoading(false);
+      this.children.loading.show(false);
       this.clearTimeout();
     }
   },
   methods: {
     playing() {
       this.clearTimeout();
-      this.showSplash(false);
-      this.showLoading(false);
-      this.showError(false);
+      this.children.splash.show(false);
+      this.children.loading.show(false);
     },
     waiting() {
       this.clearTimeout();
       // 加载超过20秒则超时显示异常
       this._timeout = setTimeout(() => this.showError(), 3e4);
-      !this.paused && this.showLoading(true);
+      !this.paused && this.children.loading.show(true);
     },
     clearTimeout() {
       if (this._timeout) {
         clearTimeout(this._timeout);
         this._timeout = null;
-      }
-    },
-    showTip(cls) {
-      this.$domWrap.removeClass(clss).addClass('correct tip ' + cls);
-      setTimeout(() => {
-        this.$domWrap.removeClass('tip ' + cls);
-      }, 500);
-    },
-    showSplash(status) {
-      if (status === false) {
-        this.$domWrap.find('mango-center-state-splash').css('display', 'none');
-      } else {
-        this.$domWrap.find('mango-center-state-splash').css('display', 'block');
-      }
-    },
-    showLoading(status) {
-      if (status === false) {
-        this.$domWrap.removeClass('loading');
-      } else {
-        this.$domWrap.addClass('correct loading');
-      }
-    },
-    showError(status) {
-      if (status === false) {
-        this.$domWrap.removeClass('error');
-      } else {
-        this.$domWrap[0].className = '';
-        this.$domWrap.addClass('error');
       }
     }
   }

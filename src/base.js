@@ -1,4 +1,4 @@
-import {addEvent, removeEvent} from 'mango-helper';
+import {addEvent, removeEvent, $} from 'mango-helper';
 import {bind} from 'toxic-utils';
 
 export default class Base {
@@ -17,6 +17,7 @@ export default class Base {
 
   createEl () {
     this.$dom = document.createElement(this.option.tag);
+    this.$domWrap = $(this.$dom);
     this.$dom.innerHTML = this.option.html;
     this.parent.$dom.appendChild(this.$dom) 
   }

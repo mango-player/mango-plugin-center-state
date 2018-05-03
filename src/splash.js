@@ -30,6 +30,11 @@ export default class Splash extends Base {
         this.$dom = $(this.$dom);
     }
 
+    show(status) {
+        const showOrHide =  status === false ? 'none' : 'block'
+        this.$domWrap.css('display', showOrHide);
+    }
+
     click(e) {
 
     }
