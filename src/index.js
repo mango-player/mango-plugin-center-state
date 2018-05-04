@@ -39,6 +39,12 @@ const mangoCenterState = popupFactory({
     videoResume() {
       this.children.status.showTip('play');
     },
+    showHdDialog(data) {
+      this.children.blue.show(data);
+    },
+    showVipDialog(data) {
+      this.children.payment.show(data);
+    },
     canplay() {
       this.playing();
     },

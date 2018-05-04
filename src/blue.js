@@ -101,7 +101,7 @@ export default class BlueTip extends Base {
 
         $refresh.hide();
         qrcodeTimer && clearTimeout(qrcodeTimer);
-        getQrcode($canvasImage);
+        getQrcode($canvasImage, data_unid, data_ftype);
         this.qrcodeTimer = setTimeout(function () {
             $refresh.show();
         }, 1800000)
@@ -121,6 +121,6 @@ export default class BlueTip extends Base {
     }
 
     click(e) {
-        
+
     }
 }

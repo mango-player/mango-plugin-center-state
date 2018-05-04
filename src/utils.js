@@ -36,23 +36,20 @@ export function render(tpl, context) {
 /**
  * 获取会员购买二维码图片
  */
-export function getQrcode($canvasImage) {
+export function getQrcode($canvasImage, unid, ftype) {
     var ipad = (/iPad/i).test(navigator.userAgent);
-    var bid = ipad ? '4.1.11' : '1.1.11';
-    
 
-    var cookie = cookieGet('__STKUUID');
     var _data = {
         invoker: 'pcweb',
         version: '1',
-        unid: data_unid,
-        ftype: data_ftype,
+        unid: unid,
+        ftype: ftype,
         ticket: cookieGet('HDCN') == '' ? '' : cookieGet('HDCN').match(/\b\w+\b/g)[0],
         c: 7,
-        bid: bid,
+        bid: ipad ? '4.1.11' : '1.1.11',
         sessionid: cookieGet('sessionid') || '',
         uuid: cookieGet('uuid') || '',
-        cookie: cookie,
+        cookie: cookieGet('__STKUUID'),
         sign: + new Date(),
         uvip: cookieGet('vipStatus') || '',
         isscan: 1

@@ -15,7 +15,7 @@ const AUTH_RESULT = {
 
 // VIP 付费弹窗
 const VIP_DAILOG_TPL = `
-    <div class="c-player-paytips {{isshow}}">
+    <div class="c-player-paytips {{hideQRcodeCls}}">
         <div class="c-player-paytips-wrapper">
             <div class="c-player-paytips-title">
                 <i class="warning"></i><span>{{tips}}</span>
@@ -127,7 +127,6 @@ export default class PaymentTip extends Base {
     createHTMLFragment(_data) {
         const self = this;
         let html = "", info = _data.info, user = _data.user, vip_info = ''; 
-        let num = 0, isNum = false; //记录有多少张观影券; // 是否有观影券; 
 
         // 非会员价格 和 会员价格
         let novip_price = info.price_novip || 0;
@@ -154,24 +153,29 @@ export default class PaymentTip extends Base {
             vip_info = info.tips.vip_promotion || vip_info;
         }
 
-        let pay_type = 0; //判断目前在哪个状态下面
+        let paymentType = 0; //判断目前在哪个状态下面
         let isShowPayTips = vip_info == '' ? 'none' : 'block';//判断文案是否为空
         bottom.vip_tips = playTips.play_tips;//获取动态文案
         bottom.play_button = playTips.play_button;
 
         //创建vip按钮
         let creatBottom = function (text, s) {
-            let isvipBottom = '<a class="c-player-paytips-button open-vip-dialog" unid="' + data_unid + '"  clocation="60303" ftype="3" type="1" target="_blank"' +
-                ' href="//order.mgtv.com/pay/pc/index.html?unid=' + data_unid + '&ftype=' + data_ftype + '&clocation=' + data_clocation + '">' + playTips.play_button +
-                '   <i class="price" node-type="promotion-info" style="display: ' + isShowPayTips + '">' + vip_info + '</i> ' +
-                '</a>'
+            let isvipBottom = 
+                '<a class="c-player-paytips-button open-vip-dialog" unid="' 
+                + data_unid + '"  clocation="60303" ftype="3" type="1" target="_blank"' 
+                + ' href="//order.mgtv.com/pay/pc/index.html?unid=' + data_unid 
+                + '&ftype=' + data_ftype + '&clocation=' + data_clocation + '">' 
+                + playTips.play_button + '<i class="price" node-type="promotion-info" style="display: ' 
+                + isShowPayTips + '">' + vip_info + '</i> ' 
+                + '</a>';
             return isvipBottom;
         };
 
         //购买按钮
-        let tickerInfo = function () {
-            let ticketStr = '<em class="tickets">' + playTips.play_tips2 + '</em><a class="anotherway" type="2"' +
-                ' target="_blank" href="//order.mgtv.com/pc/order?videoId=' + VIDEOINFO.vid + '&page=' + data_page + '&unid=' + data_unid + '&ftype=' + data_ftype + '&clocation=4">' + playTips.play_link + '</a>';
+        let ticketInfo = function () {
+            let ticketStr = '<em class="tickets">' + playTips.play_tips2 + '</em><a class="anotherway" type="2" '
+                + 'target="_blank" href="//order.mgtv.com/pc/order?videoId=' + VIDEOINFO.vid + '&page=' + data_page 
+                + '&unid=' + data_unid + '&ftype=' + data_ftype + '&clocation=4">' + playTips.play_link + '</a>';
 
             return ticketStr;
         }
@@ -189,7 +193,7 @@ export default class PaymentTip extends Base {
 
                 html = render(VIP_DAILOG_TPL, {
                     bottom: creatBottom(text_a, isShowPayTips),
-                    text: VIDEOINFO.rid == 3 ? tickerInfo() : bottom.isvip,
+                    text: VIDEOINFO.rid == 3 ? ticketInfo() : bottom.isvip,
                     tips: '开通会员免费观看本直播',
                     nickname: user.isvip == 1 ? nickname_a : nickname_b,
                     boss: 'tovip'
@@ -198,7 +202,7 @@ export default class PaymentTip extends Base {
                 self.buildDialog(html);
             }
 
-            pay_type = 10;
+            paymentType = 10;
         }
 
         //paymark视频付费角标，0：免费，1：VIP，2：付费（即单点），3：用券
@@ -210,7 +214,7 @@ export default class PaymentTip extends Base {
 
                 html = render(VIP_DAILOG_TPL, {
                     bottom: creatBottom(text_a, isShowPayTips),
-                    text: VIDEOINFO.rid == 3 ? tickerInfo() : bottom.isvip,
+                    text: VIDEOINFO.rid == 3 ? ticketInfo() : bottom.isvip,
                     tips: bottom.vip_tips,
                     nickname: user.isvip == 1 ? nickname_a : nickname_b,
                     boss: 'tovip'
@@ -219,17 +223,17 @@ export default class PaymentTip extends Base {
                 self.buildDialog(html);
             }
 
-            pay_type = 1;
+            paymentType = 1;
         }
 
-        // ================== 3.需付费，且付费类型为现金购买 UPGC购买增加isshow隐藏二维码扫描===============================
-        if (info.paymark == "2") {//付费（即单点）
+        // ================== 3.需付费，且付费类型为现金购买 UPGC购买增加hideQRcodeCls隐藏二维码扫描===============================
+        if (info.paymark == "2") {
             let isVipPrice = vip_price == novip_price ? true : false; //判断是不是vip半价
             let ispayBottom = ['<a class="c-player-paytips-button"' +
                 ' href="//order.mgtv.com/pc/order?videoId=' + VIDEOINFO.vid + '&page=' + data_page + '&unid=' + data_unid + '&ftype=' + data_ftype + '&clocation=4" target="_blank" type="5">' + bottom.play_button + '</a>'
             ].join("");
             let text = ['<em class="tickets">' + playTips.play_tips2 + '</em>'].join("");
-            let vip_pay_tips = bottom.vip_tips//bottom.allpay;
+            let vip_pay_tips = bottom.vip_tips;
 
             //如果是vip弹这个
             if (user.isvip == 1) {
@@ -243,28 +247,29 @@ export default class PaymentTip extends Base {
                     bottom: ispayBottom,
                     price: price,
                     text: text,
-                    tips: vip_pay_tips,//isVipPrice //bottom.allpay : vip_pay_tips,
+                    tips: vip_pay_tips,
                     nickname: user.isvip == 1 ? nickname_a : nickname_b,
                     boss: 'tovip',
-                    isshow: 'c-player-paytips-nowxpay'
+                    hideQRcodeCls: 'c-player-paytips-nowxpay'
                 });
 
                 self.buildDialog(html);
             }
 
-            pay_type = 5;
+            paymentType = 5;
         }
 
         // ================== 4.需付费，且付费类型为观影券 ===============================
-        if (info.paymark == '3') {//用券//观影券
-            let ismBottom = ['<a class="c-player-paytips-button" type="3" action-type="determine">确认使用1张观影券</a>'].join(""); //有观影券
-            let nosmBottom = ['<a class="c-player-paytips-button" type="4" target="_blank" href="//order.mgtv.com/pay/pc/index.html?unid=' + data_unid + '&ftype=' + data_ftype + '&clocation=3">续费会员用券免费看</a>'].join(""); //没有观影券
-            let originalPrice = ['<em class="tickets">原价' + price + '元</em>'].join("");
+        if (info.paymark == '3') {
+            let ismBottom = '<a class="c-player-paytips-button" type="3" action-type="determine">确认使用1张观影券</a>'; //有观影券
+            let nosmBottom = '<a class="c-player-paytips-button" type="4" target="_blank" href="//order.mgtv.com/pay/pc/index.html?unid=' 
+                            + data_unid + '&ftype=' + data_ftype + '&clocation=3">续费会员用券免费看</a>'; //没有观影券
+            let originalPrice = '<em class="tickets">原价' + price + '元</em>';
             //影片为用券,没登录的情况下
             if (user.uuid == '') {
                 html = render(VIP_DAILOG_TPL, {
                     bottom: creatBottom(text_a, isShowPayTips),
-                    text: tickerInfo(),
+                    text: ticketInfo(),
                     tips: bottom.vip_tips,
                     nickname: user.isvip == 1 ? nickname_a : nickname_b,
                     boss: 'tovip'
@@ -273,60 +278,35 @@ export default class PaymentTip extends Base {
                 self.buildDialog(html);
 
             } else {
-                if (user.isvip == 1) {
+                // 获取用户观影券数量
+                self.getCoupons().then((ticketCount) => {
+                    let context, hasTicket = ticketCount > 0 ? true : false;
+                    let movieTicket = '<em class="tickets">您目前有<b>' + ticketCount + '张</b>观影券</em><em' 
+                            + ' class="anotherway">48小时内随意观看</em>';
 
-                    function setVipLook(data) {
-                        let len = data.data.count;
-                        let isNum = len > 0 ? true : false;
-                        let movieTicket = '<em class="tickets">您目前有<b>' + len + '张</b>观影券</em><em' + ' class="anotherway">48小时内随意观看</em>';
-
-                        html = render(VIP_DAILOG_TPL, {
-                            bottom: isNum ? ismBottom : nosmBottom,
-                            text: isNum ? movieTicket : tickerInfo(),
-                            tips: isNum ? bottom.is_ticket : bottom.no_ticket,
+                    if (user.isvip == 1) {
+                        context = {
+                            bottom: hasTicket ? ismBottom : nosmBottom,
+                            text: hasTicket ? movieTicket : ticketInfo(),
+                            tips: hasTicket ? bottom.is_ticket : bottom.no_ticket,
                             nickname: user.isvip == 1 ? nickname_a : nickname_b,
                             boss: 'tovip'
-                        })
-
-                        self.buildDialog(html);
-                    }
-
-                    // 获取用户观影券数量
-                    getCoupons().then((len) => {
-                        num = len
-                        setVipLook()
-                    });
-
-                } else {
-
-                    //非会员碰到观影券的电影在没有观影券的情况下的弹出情况
-                    function setNovipLook(data) {
-
-                        let len = data.data.count;
-                        let isNum = len > 0 ? true : false;
-                        let movieTicket = ['<em class="tickets">您目前有<b>' + len + '张</b>观影券</em><em' +
-                            ' class="anotherway">48小时内随意观看</em>'
-                        ].join("");
-
-                        html = render(VIP_DAILOG_TPL, {
-                            bottom: isNum ? ismBottom : creatBottom(text_a, isShowPayTips),
-                            text: isNum ? movieTicket : tickerInfo(),
-                            tips: isNum ? bottom.is_ticket : bottom.vip_tips,
+                        }
+                    } else {
+                        context = {
+                            bottom: hasTicket ? ismBottom : creatBottom(text_a, isShowPayTips),
+                            text: hasTicket ? movieTicket : ticketInfo(),
+                            tips: hasTicket ? bottom.is_ticket : bottom.vip_tips,
                             nickname: user.isvip == 1 ? nickname_a : nickname_b,
                             boss: 'tovip'
-                        });
-
-                        self.buildDialog(html);
+                        }
                     }
-                    // 获取用户观影券数量
-                    getCoupons().then((len) => {
-                        num = len
-                        setNovipLook()
-                    });
-                }
 
+                    html = render(VIP_DAILOG_TPL, context)
+                    self.buildDialog(html);
+                });
             }
-            pay_type = 3;
+            paymentType = 3;
         };
     }
 
@@ -337,7 +317,7 @@ export default class PaymentTip extends Base {
 
         $refresh.hide();
         qrcodeTimer && clearTimeout(qrcodeTimer);
-        getQrcode($canvasImage);
+        getQrcode($canvasImage, data_unid, data_ftype);
         this.qrcodeTimer = setTimeout(function () {
             $refresh.show();
         }, 1800000)
